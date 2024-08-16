@@ -7,11 +7,12 @@ import getTheme from "theme";
 import { MetaMaskProvider } from "@metamask/sdk-react";
 
 import { PageNotFound } from "pages/PageNotFound";
-import { Home } from "pages/Home";
+import { Home } from "pages/Home/Home";
 import { CustomSnackbar } from "components/CustomSnackbar";
+import { CustomBackdrop } from "components/CustomBackdrop";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   return (
     <BrowserRouter>
       <MetaMaskProvider
@@ -31,6 +32,7 @@ function App() {
             <Route path={"*"} exact element={<PageNotFound />} />
           </Routes>
           <CustomSnackbar />
+          <CustomBackdrop />
         </ThemeProvider>
       </MetaMaskProvider>
     </BrowserRouter>
