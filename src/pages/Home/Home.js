@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Tab, Typography } from "@mui/material";
 import { useSDK } from "@metamask/sdk-react";
 import { ethers } from "ethers";
@@ -31,6 +31,17 @@ export const Home = () => {
       dispatch(showSnackbar({ message: error.message, severity: "error" }));
     }
   };
+
+  useEffect(() => {
+    if (chainId && chainId !== "0xaa36a7") {
+      dispatch(
+        showSnackbar({
+          severity: "warning",
+          message: "Only valid network for this demo is Sepolia!",
+        })
+      );
+    }
+  }, [chainId]);
 
   return (
     <Container>
