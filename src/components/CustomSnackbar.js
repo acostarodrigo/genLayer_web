@@ -6,7 +6,9 @@ import { hideSnackbar } from "state/ui";
 export const CustomSnackbar = () => {
   const { snackbar } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
-  const handleOnClose = () => [dispatch(hideSnackbar())];
+  const handleOnClose = () => {
+    dispatch(hideSnackbar());
+  };
   return (
     <Snackbar open={snackbar.show} autoHideDuration={6000}>
       <Alert

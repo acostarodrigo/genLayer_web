@@ -13,7 +13,7 @@ export const uiSlice = createSlice({
       state.snackbar.show = true;
     },
     hideSnackbar: (state) => {
-      state.snackbar = { show: false };
+      state.snackbar = { ...state.snackbar, show: false };
     },
     showBackdrop: (state) => {
       state.showBackdrop = true;
