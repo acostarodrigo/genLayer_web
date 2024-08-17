@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -17,10 +16,14 @@ import axios from "axios";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { red } from "@mui/material/colors";
 import { Link } from "react-router-dom";
+import { TransferDialog } from "pages/Home/components/TransferDialog";
 
-export const NFTCard = ({ tokenId, ipfsMetadata }) => {
+export const NFTCard = ({ tokenId, ipfsMetadata, wallet }) => {
   const [image, setImage] = useState(null);
   const [metadata, setMetadata] = useState(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
+
   const getNFT = useCallback(async () => {
     try {
       const response = await axios.get(`https://ipfs.io/ipfs/${ipfsMetadata}`);
@@ -98,7 +101,12 @@ export const NFTCard = ({ tokenId, ipfsMetadata }) => {
             >
               Sell at Opensea
             </Button>
-            <Button variant="contained" fullWidth color="error">
+            <Button
+              variant="contained"
+              fullWidth
+              color="error"
+              onClick={() => setOpenDialog(true)}
+            >
               Transfer NFT
             </Button>
           </CardActions>
@@ -108,6 +116,12 @@ export const NFTCard = ({ tokenId, ipfsMetadata }) => {
           <CircularProgress />
         </Box>
       )}
+      <TransferDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        wallet={wallet}
+        tokenId={tokenId}
+      />
     </>
   );
 };

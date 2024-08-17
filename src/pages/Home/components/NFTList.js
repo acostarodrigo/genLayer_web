@@ -81,6 +81,7 @@ export const NFTList = ({ wallet }) => {
             <NFTCard
               tokenId={token.tokenId}
               ipfsMetadata={token.ipfsMetadata}
+              wallet={wallet}
             />
           </Grid>
         ))}
