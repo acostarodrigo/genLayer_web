@@ -17,6 +17,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { red } from "@mui/material/colors";
 import { Link } from "react-router-dom";
 import { TransferDialog } from "pages/Home/components/TransferDialog";
+import { shortenAddress } from "utils/misc";
 
 export const NFTCard = ({ tokenId, ipfsMetadata, wallet }) => {
   const [image, setImage] = useState(null);
@@ -70,15 +71,16 @@ export const NFTCard = ({ tokenId, ipfsMetadata, wallet }) => {
           {image ? (
             <CardMedia
               component="img"
-              height="194"
+              width={"100%"}
+              style={{ xs: { maxWidth: 300, md: "100%" } }}
               src={`data:image/jpeg;charset=utf-8;base64,${image}`}
-              title="green iguana"
+              title="nft"
             />
           ) : (
             <Skeleton
               variant="rectangular"
-              width={210}
-              height={118}
+              width={"100%"}
+              height={200}
               animation={"wave"}
             />
           )}
@@ -87,7 +89,15 @@ export const NFTCard = ({ tokenId, ipfsMetadata, wallet }) => {
               {" "}
               Metadata
             </Typography>
-            {<pre>{JSON.stringify(metadata, null, 2)}</pre>}
+            {
+              <pre>
+                {JSON.stringify(
+                  { ...metadata, image: shortenAddress(metadata.image) },
+                  null,
+                  2
+                )}
+              </pre>
+            }
           </CardContent>
           <CardActions>
             <Button
