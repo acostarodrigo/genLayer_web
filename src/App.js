@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { ThemeProvider } from "@mui/material";
+import { Box, Container, ThemeProvider } from "@mui/material";
 import { ThemeChanger } from "components/ThemeChanger";
 import getTheme from "theme";
 import { MetaMaskProvider } from "@metamask/sdk-react";
@@ -25,7 +25,14 @@ function App() {
           infuraAPIKey: process.env.REACT_APP_BLOCKCHAIN_INFURA_ID,
         }}
       >
-        <ThemeChanger darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Box
+          width={"100"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"flex-end"}
+        >
+          <ThemeChanger darkMode={darkMode} setDarkMode={setDarkMode} />
+        </Box>
         <ThemeProvider theme={getTheme(darkMode ? "dark" : "light")}>
           <Routes>
             <Route exact path="/" element={<Home />} />

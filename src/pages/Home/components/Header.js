@@ -7,7 +7,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 export const Header = () => {
   return (
-    <Card elevation={4} style={{ margin: 4, width: "100%", padding: 30 }}>
+    <Card elevation={4} style={{ margin: 4, padding: 30 }}>
       <Grid
         container
         alignItems={"center"}

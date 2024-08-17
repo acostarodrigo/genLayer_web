@@ -9,6 +9,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { MintNFT } from "./components/MintNFT";
 import { NFTList } from "./components/NFTList";
 import { Link } from "react-router-dom";
+import { shortenAddress } from "utils/misc";
 
 export const Home = () => {
   const [wallet, setWallet] = useState("");
@@ -52,10 +53,10 @@ export const Home = () => {
         justifyContent={"center"}
         spacing={4}
       >
-        <Grid item xs={12}>
+        <Grid item textAlign={"center"}>
           <Header />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           {wallet ? (
             <>
               <Box mb={5}>
@@ -66,7 +67,9 @@ export const Home = () => {
                     target="self"
                     rel="noreferrer"
                   >
-                    {process.env.REACT_APP_BLOCKCHAIN_NFT_ADDRESS}
+                    {shortenAddress(
+                      process.env.REACT_APP_BLOCKCHAIN_NFT_ADDRESS
+                    )}
                   </Link>
                 </Typography>
               </Box>

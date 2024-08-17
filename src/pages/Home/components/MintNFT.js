@@ -11,10 +11,11 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import InputFileUpload from "components/InputFileUpload";
-import { useDispatch } from "react-redux";
+import { isMobile } from "react-device-detect";
 import { ethers } from "ethers";
+import { useDispatch } from "react-redux";
 
+import InputFileUpload from "components/InputFileUpload";
 import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
 import { apiUploadFile } from "utils/api";
 import genToken from "utils/GenToken.json";
@@ -64,40 +65,42 @@ export const MintNFT = ({ wallet }) => {
 
   return (
     <>
-      <Typography variant="h5" textAlign={"center"} mb={2}>
-        What are we doing on this page?
-      </Typography>
-      <Stepper nonLinear>
-        <Step completed>
-          <StepLabel>
-            <Typography variant="body1" color={"primary"}>
-              After image is picked is submitted to API
-            </Typography>
-          </StepLabel>
-        </Step>
-        <Step completed>
-          <StepLabel>
-            <Typography variant="body1" color={"primary"}>
-              API uploads image to IPFS and retrieves the URL
-            </Typography>
-          </StepLabel>
-        </Step>
-        <Step completed>
-          <StepLabel>
-            <Typography variant="body1" color={"primary"}>
-              API generates metadata file and submits to IPFS
-            </Typography>
-          </StepLabel>
-        </Step>
-        <Step completed>
-          <StepLabel>
-            <Typography variant="body1" color={"primary"}>
-              We call safeMint on the contract with metadata address and wait
-              for signature
-            </Typography>
-          </StepLabel>
-        </Step>
-      </Stepper>
+      <Box width={"100%"}>
+        <Typography variant="h5" textAlign={"center"} mb={2}>
+          What are we doing on this page?
+        </Typography>
+        <Stepper nonLinear orientation={isMobile ? "vertical" : "horizontal"}>
+          <Step completed>
+            <StepLabel>
+              <Typography variant="body1" color={"primary"}>
+                After image is picked is submitted to API
+              </Typography>
+            </StepLabel>
+          </Step>
+          <Step completed>
+            <StepLabel>
+              <Typography variant="body1" color={"primary"}>
+                API uploads image to IPFS and retrieves the URL
+              </Typography>
+            </StepLabel>
+          </Step>
+          <Step completed>
+            <StepLabel>
+              <Typography variant="body1" color={"primary"}>
+                API generates metadata file and submits to IPFS
+              </Typography>
+            </StepLabel>
+          </Step>
+          <Step completed>
+            <StepLabel>
+              <Typography variant="body1" color={"primary"}>
+                We call safeMint on the contract with metadata address and wait
+                for signature
+              </Typography>
+            </StepLabel>
+          </Step>
+        </Stepper>
+      </Box>
       <Stack
         spacing={2}
         direction={"column"}
