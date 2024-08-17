@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import ImageIcon from "@mui/icons-material/Image";
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "state/ui";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -18,8 +20,22 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function InputFileUpload({ setFile }) {
+  const dispatch = useDispatch();
   const handleFile = (e) => {
-    if (e.target.files.length > 0) setFile(e.target.files[0]);
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      if (!file.type.includes("image")) {
+        dispatch(
+          showSnackbar({
+            severity: "warning",
+            message: "Not a valid image. Try again",
+          })
+        );
+        return;
+      }
+
+      setFile(file);
+    }
   };
   return (
     <Button
@@ -31,7 +47,12 @@ export default function InputFileUpload({ setFile }) {
       startIcon={<ImageIcon />}
     >
       Select Image
-      <VisuallyHiddenInput type="file" name="foo" onChange={handleFile} />
+      <VisuallyHiddenInput
+        type="file"
+        name="foo"
+        onChange={handleFile}
+        accept="image/png, image/gif, image/jpeg"
+      />
     </Button>
   );
 }
