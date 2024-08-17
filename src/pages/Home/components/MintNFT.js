@@ -110,11 +110,11 @@ export const MintNFT = ({ wallet }) => {
         justifyContent={"center"}
       >
         {image ? (
-          <img src={image} width={500} height={500} />
+          <img src={image} width={"100%"} />
         ) : (
           <Card
             elevation={4}
-            style={{ backgroundColor: "#f6f3f3", width: 500, height: 500 }}
+            style={{ backgroundColor: "#f6f3f3", width: "100%" }}
           >
             <CardContent>
               <Box
