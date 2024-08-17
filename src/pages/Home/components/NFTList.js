@@ -79,15 +79,29 @@ export const NFTList = ({ wallet }) => {
         spacing={2}
         mt={5}
       >
-        {tokenList.map((token) => (
-          <Grid item xs={12} md={6} key={token.tokenId}>
-            <NFTCard
-              tokenId={token.tokenId}
-              ipfsMetadata={token.ipfsMetadata}
-              wallet={wallet}
-            />
-          </Grid>
-        ))}
+        <>
+          {tokenList.length > 0 ? (
+            <>
+              {tokenList.map((token) => (
+                <Grid item xs={12} md={6} key={token.tokenId}>
+                  <NFTCard
+                    tokenId={token.tokenId}
+                    ipfsMetadata={token.ipfsMetadata}
+                    wallet={wallet}
+                  />
+                </Grid>
+              ))}
+            </>
+          ) : (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Typography variant="body2">No NFTs to display.</Typography>
+            </Box>
+          )}
+        </>
       </Grid>
     </>
   );
