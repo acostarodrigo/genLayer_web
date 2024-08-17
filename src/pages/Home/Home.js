@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Button, Card, Container, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, Container, Grid, Tab, Typography } from "@mui/material";
 import { useSDK } from "@metamask/sdk-react";
 import { ethers } from "ethers";
 import { useDispatch } from "react-redux";
-import { hideBackdrop, showBackdrop, showSnackbar } from "state/ui";
-import InputFileUpload from "components/InputFileUpload";
-import { apiUploadFile } from "utils/api";
-import genToken from "utils/GenToken.json";
+import { showSnackbar } from "state/ui";
 import { Header } from "./components/Header";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { MintNFT } from "./components/MintNFT";
+import { NFTList } from "./components/NFTList";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const [wallet, setWallet] = useState("");
-  const [file, setFile] = useState();
   const dispatch = useDispatch();
-  const { sdk, connected, connecting, provider, chainId } = useSDK();
+  const [value, setValue] = useState("1");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const { sdk, chainId } = useSDK();
 
   const handleWalletConnect = async () => {
     try {
@@ -25,65 +31,54 @@ export const Home = () => {
       dispatch(showSnackbar({ message: error.message, severity: "error" }));
     }
   };
-  const uploadFile = async () => {
-    const nft = "0x7d5E2c1a193ED263D0f030eeB76Fd606E2D14F46";
-    dispatch(showBackdrop());
-    try {
-      console.log(file);
-      const response = await apiUploadFile(file);
-
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner(wallet);
-      console.log("====================================");
-      console.log(signer);
-      console.log("====================================");
-      const contract = new ethers.Contract(nft, genToken.abi, signer);
-      console.log("====================================");
-      console.log("response", response);
-      console.log("====================================");
-      await contract.safeMint(wallet, response.data);
-      dispatch(
-        showSnackbar({ message: "Metadata generated", severity: "success" })
-      );
-    } catch (error) {
-      dispatch(showSnackbar({ message: error.message, severity: "error" }));
-    } finally {
-      dispatch(hideBackdrop());
-    }
-  };
-  useEffect(() => {
-    if (file) {
-      uploadFile();
-    }
-  }, [file]);
 
   return (
-    <Container elevation={4}>
+    <Container>
       <Grid
         container
         direction={"column"}
         alignItems={"center"}
         justifyContent={"center"}
+        spacing={4}
       >
-        <Grid item>
+        <Grid item xs={12}>
           <Header />
         </Grid>
-        <Grid item mt={10}>
-          <Card style={{ margin: 20, padding: 20 }}>
-            <Typography variant="h3" color={"secondary"}>
-              GenLayer Full Stack exam
-            </Typography>
-            <Typography variant="body" color={"secondary"}>
-              (Thankfully, not a designer exam)
-            </Typography>
-          </Card>
-        </Grid>
-
-        <Grid item>
+        <Grid item xs={12}>
           {wallet ? (
             <>
-              <Typography>{wallet}</Typography>
-              <InputFileUpload setFile={setFile} />
+              <Box mb={5}>
+                <Typography variant="body" textAlign={"center"}>
+                  Smart Contract:{" "}
+                  <Link
+                    to={`https://sepolia.etherscan.io/address/${process.env.REACT_APP_BLOCKCHAIN_NFT_ADDRESS}`}
+                    target="self"
+                    rel="noreferrer"
+                  >
+                    {process.env.REACT_APP_BLOCKCHAIN_NFT_ADDRESS}
+                  </Link>
+                </Typography>
+              </Box>
+              <Box sx={{ width: "100%", typography: "body1" }}>
+                <TabContext value={value}>
+                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList onChange={handleChange}>
+                      <Tab label="Mint a new NFT" value="1" />
+                      <Tab label="View your NFTs" value="2" />
+                    </TabList>
+                  </Box>
+                  <TabPanel value="1">
+                    <Container>
+                      <MintNFT wallet={wallet} />
+                    </Container>
+                  </TabPanel>
+                  <TabPanel value="2">
+                    <Container>
+                      <NFTList wallet={wallet} />
+                    </Container>
+                  </TabPanel>
+                </TabContext>
+              </Box>
             </>
           ) : (
             <Button
